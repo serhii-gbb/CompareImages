@@ -58,7 +58,7 @@ public class WriteImage extends JPanel {
 
         for (int i = 0; i < arrayDiff.length; i++) {
             for (int j = 0; j < arrayDiff[i].length; j++) {
-                if (arrayDiff[i][j].equals("1")){
+                if (arrayDiff[i][j].equals("|") || arrayDiff[i][j].equals("-")){
                     bufferedImage.setRGB(j,i, color.getRGB());
                 }
 
