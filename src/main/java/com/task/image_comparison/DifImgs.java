@@ -85,7 +85,6 @@ public class DifImgs {
 
         bordersDiff = differences;
 
-
     }
 
     private int[][] creatingRectangleBorders() {
@@ -98,10 +97,6 @@ public class DifImgs {
 
         int currentY = integerIntegerMap.get(1);
         int currentX = integerIntegerMap.get(2);
-
-
-        int down = 0;
-        int back = 0;
 
         int[][] coordinates = new int[bordersDiff.length][bordersDiff[0].length];
 
@@ -158,18 +153,6 @@ public class DifImgs {
                 currentX -= 1;
                 bordersDiff[currentY][currentX] = "2";
                 coordinates[currentY][currentX] = 1;
-
-                down = 1;
-
-                if (down == 1) {
-                    if (bordersDiff[currentY + 1][currentX].equals("1")) {
-                        currentY += 1;
-                        bordersDiff[currentY][currentX] = "2";
-                        coordinates[currentY][currentX] = 1;
-                        continue;
-                    }
-                } else down = 0;
-                continue;
             }
 
             //назад
@@ -177,17 +160,6 @@ public class DifImgs {
                 currentX -= 1;
                 bordersDiff[currentY][currentX] = "2";
                 coordinates[currentY][currentX] = 1;
-                back = 1;
-
-                if (back == 1) {
-                    if (bordersDiff[currentY][currentX - 1].equals("1")) {
-                        currentX -= 1;
-                        bordersDiff[currentY][currentX] = "2";
-                        coordinates[currentY][currentX] = 1;
-                        continue;
-                    }
-                }
-                continue;
             }
 
             //назад вверх
@@ -258,30 +230,27 @@ public class DifImgs {
         bordersDiff[headerY][headerX] = "Z";
         bordersDiff[bottomY][bottomX] = "Z";
 
-        int pointA_x = leftSideX, pointA_y = leftSideY, pointB_x = 0, pointB_y = rightsideY - 1, pointC_x = rightsideX - 1, pointC_y = 0, pointD_x = leftSideX - 1, pointD_y = 0;
+
+        int     pointA_x = leftSideX, pointA_y = headerY,
+                pointB_x = rightsideX, pointB_y = headerY,
+                pointC_x = rightsideX - 1, pointC_y = bottomY,
+                pointD_x = leftSideX - 1, pointD_y = bottomY;
 
         for (int i = 0; i < rightsideX - leftSideX + 1; i++) {
 
-            bordersDiff[leftSideY][leftSideX + i] = "-";
+            bordersDiff[pointA_y][leftSideX + i] = "-";
 
-            if (leftSideX + i >= pointB_x) {
-                pointB_x = leftSideX + i;
-            }
         }
 
         for (int i = 0; i < bottomY - headerY + 1; i++) {
 
             bordersDiff[pointB_y + i][pointB_x] = "|";
 
-            if (bottomY >= pointB_y + i) {
-                pointC_y = pointB_y + i;
-            }
         }
 
         for (int i = 0; i < rightsideX - leftSideX + 1; i++) {
 
             bordersDiff[pointC_y][pointC_x - i] = "-";
-            pointD_y = pointC_y;
 
         }
 
@@ -302,13 +271,14 @@ public class DifImgs {
 
 
                 if (bordersDiff[i][j].equals("|")) {
+                    ++j;
                     for (; j < bordersDiff[i].length - 1; j++) {
 
-                        if (bordersDiff[i][j + 1].equals("1") || bordersDiff[i][j + 1].equals("2")) {
-                            bordersDiff[i][j + 1] = ".";
+                        if (bordersDiff[i][j].equals("1") || bordersDiff[i][j].equals("2")) {
+                            bordersDiff[i][j] = ".";
                         }
 
-                        if (bordersDiff[i][j + 1].equals("|")) break;
+                        if (bordersDiff[i][j].equals("|")) break;
                     }
                 }
             }
@@ -320,7 +290,6 @@ public class DifImgs {
     private Map<Integer, Integer> searching1() {
 
         Map<Integer, Integer> startPoint = new HashMap<>();
-        boolean key = false;
 
         for (int i = 0; i < bordersDiff.length; i++) {
             for (int j = 0; j < bordersDiff[i].length; j++) {
